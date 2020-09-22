@@ -1,0 +1,120 @@
+openapi: 3.0.1
+info:
+  description: xiaoduo chatbot api
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  title: Xiaoduo Chatbot open api
+  version: 1.0.0
+servers:
+- url: https://cvd.xiaoduoai.com/v1/api
+tags:
+- description: tenant
+  name: tenant
+paths:
+  /match_question:
+    post:
+      operationId: matchQuestion
+      requestBody:
+        content:
+          multipart/formData:
+            schema:
+              properties:
+                unit_id:
+                  description: 企业ID
+                channel_id:
+                  description: 渠道ID
+                salt:
+                  description: 签名加盐,生成方式如下
+                  type: string
+                sign:
+                  description: 签名,生成方式如下
+                  type: string
+                user_id:
+                  description: 用户ID,要求全局唯一
+                  type: string
+                nick:
+                  description: 用户昵称
+                  type: string
+                question:
+                  description: 用户提问
+                  type: string
+              required:
+              - channel_id
+              - question
+              - salt
+              - sign
+              - unit_id
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchQuestionRsp'
+          description: successful operation
+components:
+  schemas:
+    MatchQuestionRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/MatchQuestionRsp_allOf'
+    Inspect:
+      properties:
+        id:
+          type: string
+        question:
+          type: string
+      type: object
+    APIResponse:
+      description: ""
+      properties:
+        error_code:
+          description: 响应码
+          format: int32
+          type: integer
+        info:
+          type: string
+      title: APIResponse
+      type: object
+    MatchQuestionRsp_allOf_data:
+      properties:
+        msg_id:
+          type: string
+        user_id:
+          format: int64
+          type: integer
+        question:
+          type: string
+        answers:
+          items:
+            type: string
+          type: array
+        options:
+          items:
+            type: string
+          type: array
+        recommend:
+          items:
+            type: string
+          type: array
+        related_questions:
+          items:
+            type: string
+          type: array
+        hot_questions:
+          items:
+            type: string
+          type: array
+        inspects:
+          items:
+            description: TODO default missing array inner type to string
+            type: string
+          type: array
+        state:
+          format: int32
+          type: integer
+    MatchQuestionRsp_allOf:
+      properties:
+        data:
+          $ref: '#/components/schemas/MatchQuestionRsp_allOf_data'
