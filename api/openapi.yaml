@@ -8,22 +8,23 @@ info:
   version: 1.0.0
 servers:
 - url: https://cvd.xiaoduoai.com/v1/api
-tags:
-- description: tenant
-  name: tenant
 paths:
   /match_question:
     post:
       operationId: matchQuestion
       requestBody:
         content:
-          multipart/formData:
+          application/x-www-form-urlencoded:
             schema:
               properties:
                 unit_id:
                   description: 企业ID
+                  format: int32
+                  type: integer
                 channel_id:
                   description: 渠道ID
+                  format: int32
+                  type: integer
                 salt:
                   description: 签名加盐,生成方式如下
                   type: string
@@ -41,10 +42,12 @@ paths:
                   type: string
               required:
               - channel_id
+              - nick
               - question
               - salt
               - sign
               - unit_id
+              - user_id
         required: true
       responses:
         "200":
@@ -80,10 +83,10 @@ components:
     MatchQuestionRsp_allOf_data:
       properties:
         msg_id:
-          type: string
-        user_id:
           format: int64
           type: integer
+        user_id:
+          type: string
         question:
           type: string
         answers:
@@ -108,8 +111,7 @@ components:
           type: array
         inspects:
           items:
-            description: TODO default missing array inner type to string
-            type: string
+            $ref: '#/components/schemas/Inspect'
           type: array
         state:
           format: int32

@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 ## MatchQuestion
 
-> MatchQuestionRsp MatchQuestion(ctx, unitId, channelId, salt, sign, question, optional)
+> MatchQuestionRsp MatchQuestion(ctx, unitId, channelId, salt, sign, userId, nick, question)
 
 
 
@@ -20,27 +20,13 @@ Method | HTTP request | Description
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**unitId** | [**interface{}**](interface{}.md)| 企业ID | 
-**channelId** | [**interface{}**](interface{}.md)| 渠道ID | 
+**unitId** | **int32**| 企业ID | 
+**channelId** | **int32**| 渠道ID | 
 **salt** | **string**| 签名加盐,生成方式如下 | 
 **sign** | **string**| 签名,生成方式如下 | 
+**userId** | **string**| 用户ID,要求全局唯一 | 
+**nick** | **string**| 用户昵称 | 
 **question** | **string**| 用户提问 | 
- **optional** | ***MatchQuestionOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a MatchQuestionOpts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-
-
-
- **userId** | **optional.String**| 用户ID,要求全局唯一 | 
- **nick** | **optional.String**| 用户昵称 | 
 
 ### Return type
 
@@ -52,7 +38,7 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: multipart/formData
+- **Content-Type**: application/x-www-form-urlencoded
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

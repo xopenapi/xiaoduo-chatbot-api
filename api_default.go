@@ -14,7 +14,6 @@ import (
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -25,12 +24,6 @@ var (
 // DefaultApiService DefaultApi service
 type DefaultApiService service
 
-// MatchQuestionOpts Optional parameters for the method 'MatchQuestion'
-type MatchQuestionOpts struct {
-    UserId optional.String
-    Nick optional.String
-}
-
 /*
 MatchQuestion Method for MatchQuestion
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -38,13 +31,12 @@ MatchQuestion Method for MatchQuestion
  * @param channelId 渠道ID
  * @param salt 签名加盐,生成方式如下
  * @param sign 签名,生成方式如下
+ * @param userId 用户ID,要求全局唯一
+ * @param nick 用户昵称
  * @param question 用户提问
- * @param optional nil or *MatchQuestionOpts - Optional Parameters:
- * @param "UserId" (optional.String) -  用户ID,要求全局唯一
- * @param "Nick" (optional.String) -  用户昵称
 @return MatchQuestionRsp
 */
-func (a *DefaultApiService) MatchQuestion(ctx _context.Context, unitId interface{}, channelId interface{}, salt string, sign string, question string, localVarOptionals *MatchQuestionOpts) (MatchQuestionRsp, *_nethttp.Response, error) {
+func (a *DefaultApiService) MatchQuestion(ctx _context.Context, unitId int32, channelId int32, salt string, sign string, userId string, nick string, question string) (MatchQuestionRsp, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -61,7 +53,7 @@ func (a *DefaultApiService) MatchQuestion(ctx _context.Context, unitId interface
 	localVarFormParams := _neturl.Values{}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"multipart/formData"}
+	localVarHTTPContentTypes := []string{"application/x-www-form-urlencoded"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -81,12 +73,8 @@ func (a *DefaultApiService) MatchQuestion(ctx _context.Context, unitId interface
 	localVarFormParams.Add("channel_id", parameterToString(channelId, ""))
 	localVarFormParams.Add("salt", parameterToString(salt, ""))
 	localVarFormParams.Add("sign", parameterToString(sign, ""))
-	if localVarOptionals != nil && localVarOptionals.UserId.IsSet() {
-		localVarFormParams.Add("user_id", parameterToString(localVarOptionals.UserId.Value(), ""))
-	}
-	if localVarOptionals != nil && localVarOptionals.Nick.IsSet() {
-		localVarFormParams.Add("nick", parameterToString(localVarOptionals.Nick.Value(), ""))
-	}
+	localVarFormParams.Add("user_id", parameterToString(userId, ""))
+	localVarFormParams.Add("nick", parameterToString(nick, ""))
 	localVarFormParams.Add("question", parameterToString(question, ""))
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {

@@ -10,14 +10,14 @@
 package xiaoduo
 // MatchQuestionRspAllOfData struct for MatchQuestionRspAllOfData
 type MatchQuestionRspAllOfData struct {
-	MsgId string `json:"msg_id,omitempty"`
-	UserId int64 `json:"user_id,omitempty"`
+	MsgId int64 `json:"msg_id,omitempty"`
+	UserId string `json:"user_id,omitempty"`
 	Question string `json:"question,omitempty"`
 	Answers []string `json:"answers,omitempty"`
 	Options []string `json:"options,omitempty"`
 	Recommend []string `json:"recommend,omitempty"`
 	RelatedQuestions []string `json:"related_questions,omitempty"`
 	HotQuestions []string `json:"hot_questions,omitempty"`
-	Inspects []string `json:"inspects,omitempty"`
+	Inspects []Inspect `json:"inspects,omitempty"`
 	State int32 `json:"state,omitempty"`
 }
